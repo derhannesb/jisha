@@ -24,9 +24,9 @@ public class ImageLabel extends JLabel {
 		try {
 			bufferedImage = ImageIO.read(new File("gfx/logo.png"));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		setBounds(0, 0, 640, 480);
 		setPreferredSize(new Dimension(640,480));
 		setBackground(new Color(255,255,255));
