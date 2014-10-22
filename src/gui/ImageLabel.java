@@ -39,8 +39,44 @@ public class ImageLabel extends JLabel {
 	
 	public void pixeltest()
 	{
-		 final byte[] pixels =  ((DataBufferByte) bufferedImage.getRaster().getDataBuffer()).getData();
-		 System.out.println(pixels.length);
+		 byte[] pixels =  ((DataBufferByte) bufferedImage.getRaster().getDataBuffer()).getData();
+		 boolean hasAlphaChannel = bufferedImage.getAlphaRaster() != null;
+		 int width = bufferedImage.getWidth();
+	     int height = bufferedImage.getHeight();
+	     
+		 if (hasAlphaChannel) {
+	         int pixelLength = 4;
+	         for (int pixel = 0, row = 0, col = 0; pixel < pixels.length; pixel += pixelLength) {
+	            int argb = 0;
+	            argb += (((int) pixels[pixel] & 0xff) << 24); // alpha
+	            argb += ((int) pixels[pixel + 1] & 0xff); // blue
+	            argb += (((int) pixels[pixel + 2] & 0xff) << 8); // green
+	            argb += (((int) pixels[pixel + 3] & 0xff) << 16); // red
+	            
+	            //result[row][col] = argb;
+	            col++;
+	            if (col == width) {
+	               col = 0;
+	               System.out.println(argb);
+	               row++;
+	            }
+	         }
+	      } else {
+	         int pixelLength = 3;
+	         for (int pixel = 0, row = 0, col = 0; pixel < pixels.length; pixel += pixelLength) {
+	            int argb = 0;
+	            argb += -16777216; // 255 alpha
+	            argb += ((int) pixels[pixel] & 0xff); // blue
+	            argb += (((int) pixels[pixel + 1] & 0xff) << 8); // green
+	            argb += (((int) pixels[pixel + 2] & 0xff) << 16); // red
+	            //result[row][col] = argb;
+	            col++;
+	            if (col == width) {
+	               col = 0;
+	               row++;
+	            }
+	         }
+	      }
 	}
 
 }
